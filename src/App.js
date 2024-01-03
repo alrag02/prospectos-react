@@ -1,8 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios';
-import {Modal, ModalBody, ModalFooter, ModalHeader, Table} from 'reactstrap';
+import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import React, { useState, useEffect } from 'react';
 
 function App() {
@@ -52,7 +51,7 @@ function App() {
     .then(response=>{
       setData(response.data);
     }).catch(error=>{
-      console.log(error);
+      alert(error);
     })
   }
 
@@ -64,7 +63,7 @@ function App() {
       setData(data.concat(response.data));
       abrirCerrarModalInsertar();
     }).catch(error=>{
-      console.log(error);
+      alert(error);
     })
   }
 
@@ -90,7 +89,7 @@ function App() {
       });
       abrirCerrarModalEditar();
     }).catch(error=>{
-      console.log(error);
+      alert(error);
     })
   }
 
@@ -100,7 +99,7 @@ function App() {
      setData(data.filter(item=>item.id!==response.data));
       abrirCerrarModalEliminar();
     }).catch(error=>{
-      console.log(error);
+      alert(error);
     })
   }
 
@@ -148,7 +147,7 @@ function App() {
             <td>{item.codigoPostal}</td>
             <td>{item.telefono}</td>
             <td>{item.rfc}</td>
-            <td>{item.status}</td>
+            <td>{item.estatus}</td>
             <td>
               <button className="btn btn-primary" onClick={()=>seleccionarItem(item, "Editar")}>Editar</button> {"  "}
               <button className="btn btn-danger" onClick={()=>seleccionarItem(item, "Eliminar")}>Eliminar</button>
@@ -257,7 +256,7 @@ function App() {
           <br />
           <label>Estatus:</label>
           <br />
-          <input type="text" className="form-control" onChange={handleChange} name="estatus" value={selectedItem && selectedItem.status}/>
+          <input type="text" className="form-control" onChange={handleChange} name="estatus" value={selectedItem && selectedItem.estatus}/>
           <br />
         </div>
       </ModalBody>
