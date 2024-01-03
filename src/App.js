@@ -5,7 +5,7 @@ import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import React, { useState, useEffect } from 'react';
 
 function App() {
-  const baseUrl="https://localhost:3000/api/prospectos"
+  const baseUrl="https://localhost:44386/api/prospectos"
   const [data, setData]=useState([])
   const [modalInsertar, setModalInsertar]=useState(false);
   const [modalEditar, setModalEditar]=useState(false);
@@ -21,9 +21,21 @@ function App() {
     codigoPostal: '',
     telefono: '',
     rfc: '',
-    estatus: '',
+    estatus: 1,
   })
 
+  const getEstatusText = (value) => {
+    switch (value) {
+      case 1:
+        return 'Aceptado';
+      case 2:
+        return 'Pendiente';
+      case 3:
+        return 'Rechazado';
+      default:
+        return '';
+    }
+  };
 
   const handleChange=e=>{
     const {name, value}=e.target;
@@ -114,48 +126,48 @@ function App() {
   },[])
 
   return (
-    <div className="App">
-      <br></br>
-      <button onClick={()=>abrirCerrarModalInsertar()} className="btn btn-info">Nuevo</button>
-      <table className='table table-bordered'>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Apellido Paterno</th>
-            <th>Apellido Materno</th>
-            <th>Calle</th>
-            <th>Número</th>
-            <th>Colonia</th>
-            <th>Código Postal</th>
-            <th>Teléfono</th>
-            <th>RFC</th>
-            <th>Estatus</th>
-            <th>Opciones</th>
-          </tr>
-        </thead>
-        <tbody>
-        {data.map(item=>(
-          <tr key={item.id}>
-            <td>{item.id}</td>
-            <td>{item.nombre}</td>
-            <td>{item.apellidoPaterno}</td>
-            <td>{item.apellidoMaterno}</td>
-            <td>{item.calle}</td>
-            <td>{item.numero}</td>
-            <td>{item.colonia}</td>
-            <td>{item.codigoPostal}</td>
-            <td>{item.telefono}</td>
-            <td>{item.rfc}</td>
-            <td>{item.estatus}</td>
-            <td>
-              <button className="btn btn-primary" onClick={()=>seleccionarItem(item, "Editar")}>Editar</button> {"  "}
-              <button className="btn btn-danger" onClick={()=>seleccionarItem(item, "Eliminar")}>Eliminar</button>
-            </td>
-          </tr>
-        ))}
-        </tbody>
-      </table>
+    <div className="App"> 
+    <br></br>
+        <button onClick={()=>abrirCerrarModalInsertar()} className="btn btn-info">Nuevo</button>
+        <table className='table table-bordered'>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Apellido Paterno</th>
+              <th>Apellido Materno</th>
+              <th>Calle</th>
+              <th>Número</th>
+              <th>Colonia</th>
+              <th>Código Postal</th>
+              <th>Teléfono</th>
+              <th>RFC</th>
+              <th>Estatus</th>
+              <th>Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+          {data.map(item=>(
+            <tr key={item.id}>
+              <td>{item.id}</td>
+              <td>{item.nombre}</td>
+              <td>{item.apellidoPaterno}</td>
+              <td>{item.apellidoMaterno}</td>
+              <td>{item.calle}</td>
+              <td>{item.numero}</td>
+              <td>{item.colonia}</td>
+              <td>{item.codigoPostal}</td>
+              <td>{item.telefono}</td>
+              <td>{item.rfc}</td>
+              <td>{getEstatusText(selectedItem.estatus)}</td>
+              <td>
+                <button className="btn btn-primary" onClick={()=>seleccionarItem(item, "Editar")}>Editar</button> {"  "}
+                <button className="btn btn-danger" onClick={()=>seleccionarItem(item, "Eliminar")}>Eliminar</button>
+              </td>
+            </tr>
+          ))}
+          </tbody>
+        </table>
 
 
       <Modal isOpen={modalInsertar}>
@@ -200,7 +212,12 @@ function App() {
             <br />
             <label>Estatus:</label>
             <br />
-            <input type="text" className="form-control" onChange={handleChange} name="estatus" />
+            <select className="form-control" onChange={handleChange} name="estatus">
+              <option value={1}>Enviado</option>
+              <option value={2}>Autorizado</option>
+              <option value={3}>Rechazado</option>
+            </select>
+            {/* <input type="text" className="form-control" onChange={handleChange} name="estatus" /> */}
             <br />
           </div>
         </ModalBody>
@@ -256,7 +273,12 @@ function App() {
           <br />
           <label>Estatus:</label>
           <br />
-          <input type="text" className="form-control" onChange={handleChange} name="estatus" value={selectedItem && selectedItem.estatus}/>
+          <select className="form-control" onChange={handleChange} name="estatus" value={selectedItem && selectedItem.estatus}>
+            <option value={1}>Aceptado</option>
+            <option value={2}>Pendiente</option>
+            <option value={3}>Rechazado</option>
+          </select>
+          {/* <input type="text" className="form-control" onChange={handleChange} name="estatus" value={selectedItem && selectedItem.estatus}/> */}
           <br />
         </div>
       </ModalBody>
