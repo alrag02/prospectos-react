@@ -21,7 +21,7 @@ function App() {
     codigoPostal: '',
     telefono: '',
     rfc: '',
-    estatus: 1,
+    estatus: '',
   })
 
   const getEstatusText = (value) => {
@@ -159,7 +159,7 @@ function App() {
               <td>{item.codigoPostal}</td>
               <td>{item.telefono}</td>
               <td>{item.rfc}</td>
-              <td>{getEstatusText(selectedItem.estatus)}</td>
+              <td>{getEstatusText(item.estatus)}</td>
               <td>
                 <button className="btn btn-primary" onClick={()=>seleccionarItem(item, "Editar")}>Editar</button> {"  "}
                 <button className="btn btn-danger" onClick={()=>seleccionarItem(item, "Eliminar")}>Eliminar</button>
@@ -217,7 +217,6 @@ function App() {
               <option value={2}>Autorizado</option>
               <option value={3}>Rechazado</option>
             </select>
-            {/* <input type="text" className="form-control" onChange={handleChange} name="estatus" /> */}
             <br />
           </div>
         </ModalBody>
@@ -274,11 +273,10 @@ function App() {
           <label>Estatus:</label>
           <br />
           <select className="form-control" onChange={handleChange} name="estatus" value={selectedItem && selectedItem.estatus}>
-            <option value={1}>Aceptado</option>
-            <option value={2}>Pendiente</option>
+            <option value={1}>Enviado</option>
+            <option value={2}>Autorizado</option>
             <option value={3}>Rechazado</option>
           </select>
-          {/* <input type="text" className="form-control" onChange={handleChange} name="estatus" value={selectedItem && selectedItem.estatus}/> */}
           <br />
         </div>
       </ModalBody>
