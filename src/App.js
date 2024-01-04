@@ -236,11 +236,11 @@ function App() {
           <br />
           <label>Nombre: </label>
           <br />
-          <input type="text" className="form-control" onChange={handleChange} name="nombre" value={selectedItem && selectedItem.nombre}/>
+          <input type="text" className="form-control" onChange={handleChange} name="nombre" required maxLength="50" value={selectedItem && selectedItem.nombre}/>
           <br />
           <label>Apellido Paterno:</label>
           <br />
-          <input type="text" className="form-control" onChange={handleChange} name="apellidoPaterno" value={selectedItem && selectedItem.apellidoPaterno}/>
+          <input type="text" className="form-control" onChange={handleChange} name="apellidoPaterno" required maxLength="50" value={selectedItem && selectedItem.apellidoPaterno}/>
           <br />
           <label>Apellido Materno:</label>
           <br />
@@ -248,27 +248,27 @@ function App() {
           <br />
           <label>Calle:</label>
           <br />
-          <input type="text" className="form-control" onChange={handleChange} name="calle" value={selectedItem && selectedItem.calle}/>
+          <input type="text" className="form-control" onChange={handleChange} name="calle" required maxLength="100" value={selectedItem && selectedItem.calle}/>
           <br />
           <label>Número:</label>
           <br />
-          <input type="text" className="form-control" onChange={handleChange} name="numero" value={selectedItem && selectedItem.numero}/>
+          <input type="text" className="form-control" onChange={handleChange} name="numero" required maxLength="20" value={selectedItem && selectedItem.numero}/>
           <br />
           <label>Colonia:</label>
           <br />
-          <input type="text" className="form-control" onChange={handleChange} name="colonia" value={selectedItem && selectedItem.colonia}/>
+          <input type="text" className="form-control" onChange={handleChange} name="colonia" required maxLength="100" value={selectedItem && selectedItem.colonia}/>
           <br />
           <label>Código Postal:</label>
           <br />
-          <input type="text" className="form-control" onChange={handleChange} name="codigoPostal" value={selectedItem && selectedItem.codigoPostal}/>
+          <input type="text" className="form-control" onChange={handleChange} name="codigoPostal" required maxLength="5" pattern='^[0-9]{5}$' value={selectedItem && selectedItem.codigoPostal}/>
           <br />
           <label>Teléfono:</label>
           <br />
-          <input type="text" className="form-control" onChange={handleChange} name="telefono" value={selectedItem && selectedItem.telefono}/>
+          <input type="text" className="form-control" onChange={handleChange} name="telefono" required maxLength="15" value={selectedItem && selectedItem.telefono}/>
           <br />
           <label>RFC:</label>
           <br />
-          <input type="text" className="form-control" onChange={handleChange} name="rfc" value={selectedItem && selectedItem.rfc}/>
+          <input type="text" className="form-control" onChange={handleChange} name="rfc" required maxLength="13" pattern='^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$' value={selectedItem && selectedItem.rfc}/>
           <br />
           <label>Estatus:</label>
           <br />
