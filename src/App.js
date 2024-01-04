@@ -5,11 +5,12 @@ import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import React, { useState, useEffect } from 'react';
 
 function App() {
-  const baseUrl="https://localhost:44386/api/prospectos"
+  const baseUrl="https://localhost:44386/api/"
   const [data, setData]=useState([])
   const [modalInsertar, setModalInsertar]=useState(false);
   const [modalEditar, setModalEditar]=useState(false);
   const [modalEliminar, setModalEliminar]=useState(false);
+  const [modalInsertarDocumento, setModalInsertarDocumento]=useState(false);
   const [selectedItem, setSelectedItem]=useState({
     id: '',
     nombre: '',
@@ -23,6 +24,13 @@ function App() {
     rfc: '',
     estatus: '',
   })
+  const [selectedDocumento, setSelectedDocumento]=useState({
+    id: '',
+    nombre: '',
+    prospectoId: '',
+    urlDocumento: ''
+  })
+
 
   const getEstatusText = (value) => {
     switch (value) {
@@ -46,6 +54,16 @@ function App() {
     console.log(selectedItem);
   }
 
+  const handleChangeDocumento=e=>{
+    const {name, value}=e.target;
+    setSelectedDocumento({
+      ...selectedDocumento,
+      prospectoId: selectedItem.id,
+      [name]: value
+    });
+    console.log(selectedDocumento);
+  }
+
   const abrirCerrarModalInsertar=()=>{
     setModalInsertar(!modalInsertar);
   }
@@ -58,30 +76,34 @@ function App() {
     setModalEliminar(!modalEliminar);
   }
 
+  const abrirCerrarModalInsertarDocumento=()=>{
+    setModalInsertarDocumento(!modalInsertarDocumento);
+  }
+
   const petitionGet=async()=>{
-    await axios.get(baseUrl)
+    await axios.get(baseUrl+"prospectos")
     .then(response=>{
       setData(response.data);
     }).catch(error=>{
-      alert(error);
+      console.log(error);
     })
   }
 
   const petitionPost=async()=>{
     delete selectedItem.id;
     selectedItem.estatus=parseInt(selectedItem.estatus);
-    await axios.post(baseUrl, selectedItem)
+    await axios.post(baseUrl+"prospectos", selectedItem)
     .then(response=>{
       setData(data.concat(response.data));
       abrirCerrarModalInsertar();
     }).catch(error=>{
-      alert(error);
+      console.log(error);
     })
   }
 
   const petitionPut=async()=>{
     selectedItem.estatus=parseInt(selectedItem.estatus);
-    await axios.put(baseUrl+"/"+selectedItem.id, selectedItem)
+    await axios.put(baseUrl+"prospectos/"+selectedItem.id, selectedItem)
     .then(response=>{
       var respuesta=response.data;
       var dataAuxiliar=data;
@@ -101,24 +123,48 @@ function App() {
       });
       abrirCerrarModalEditar();
     }).catch(error=>{
-      alert(error);
+      console.log(error);
     })
   }
 
   const petitionDelete=async()=>{
-    await axios.delete(baseUrl+"/"+selectedItem.id)
+    await axios.delete(baseUrl+"prospectos/"+selectedItem.id)
     .then(response=>{
      setData(data.filter(item=>item.id!==response.data));
       abrirCerrarModalEliminar();
     }).catch(error=>{
-      alert(error);
+      console.log(error);
     })
   }
 
+
+  const petitionPostDocumento=async()=>{
+    delete selectedDocumento.id;
+    selectedDocumento.prospectoId=parseInt(selectedDocumento.prospectoId);
+    await axios.post(baseUrl+"documentos", selectedDocumento)
+    .then(response=>{
+      setData(data.concat(response.data));
+      abrirCerrarModalInsertarDocumento();
+    }).catch(error=>{
+      console.log(error);
+    })
+  }
+
+
+
   const seleccionarItem=(item, caso)=>{
     setSelectedItem(item);
-    (caso==="Editar")?
-    abrirCerrarModalEditar(): abrirCerrarModalEliminar();
+    switch (caso) {
+      case "Eliminar":
+        abrirCerrarModalEliminar()
+        break;
+      case "Documento":
+        abrirCerrarModalInsertarDocumento()
+        break;
+      default:
+        abrirCerrarModalEditar()
+        break;
+    }
   }
 
   useEffect(()=>{
@@ -128,7 +174,8 @@ function App() {
   return (
     <div className="App"> 
     <br></br>
-        <button onClick={()=>abrirCerrarModalInsertar()} className="btn btn-info">Nuevo</button>
+        <div className='container'>
+                  <button onClick={()=>abrirCerrarModalInsertar()} className="btn btn-info">Nuevo</button>
         <table className='table table-bordered'>
           <thead>
             <tr>
@@ -163,12 +210,13 @@ function App() {
               <td>
                 <button className="btn btn-primary" onClick={()=>seleccionarItem(item, "Editar")}>Editar</button> {"  "}
                 <button className="btn btn-danger" onClick={()=>seleccionarItem(item, "Eliminar")}>Eliminar</button>
+                <button className="btn btn-success" onClick={()=>seleccionarItem(item, "Documento")}>Documento</button>
               </td>
             </tr>
           ))}
           </tbody>
         </table>
-
+        </div>
 
       <Modal isOpen={modalInsertar}>
         <ModalHeader>Inserte un nuevo prospecto</ModalHeader>
@@ -294,7 +342,33 @@ function App() {
           <button className="btn btn-danger" onClick={()=>petitionDelete()}>Sí</button>
           <button className="btn btn-secondary" onClick={()=>abrirCerrarModalEliminar()}>No</button>
         </ModalFooter>
-      </Modal>
+    </Modal>
+
+      <Modal isOpen={modalInsertarDocumento}>
+      <ModalHeader>Agregue un Documento</ModalHeader>
+      <ModalBody>
+        <div className="form-group">
+          <label>ID: </label>
+          <br />
+          <input type="text" className="form-control" onLoad={handleChangeDocumento} name="prospectoId" readOnly value={selectedItem && selectedItem.id}/>
+          <br />
+          <label>Nombre: </label>
+          <br />
+          <input type="text" className="form-control" onChange={handleChangeDocumento} name="nombre" required maxLength="50"/>
+          <br />
+          <label>Documento:</label>
+          <br />
+          <input className="form-control" type="file" onChange={handleChangeDocumento} name="urlDocumento"/>
+          <br />
+        </div>
+      </ModalBody>
+      <ModalFooter>
+        <button className="btn btn-primary" onClick={()=>petitionPostDocumento()}>Agregar</button>{"   "}
+        <button className="btn btn-danger" onClick={()=>abrirCerrarModalInsertarDocumento()}>Cancelar</button>
+      </ModalFooter>
+    </Modal>
+
+
 
     </div>
   );
