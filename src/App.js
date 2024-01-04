@@ -176,11 +176,11 @@ function App() {
           <div className="form-group">
             <label>Nombre: </label>
             <br />
-            <input type="text" className="form-control" onChange={handleChange} name="nombre"/>
+            <input type="text" className="form-control" onChange={handleChange} name="nombre" required maxLength="50"/>
             <br />
             <label>Apellido Paterno:</label>
             <br />
-            <input type="text" className="form-control" onChange={handleChange} name="apellidoPaterno" />
+            <input type="text" className="form-control" onChange={handleChange} name="apellidoPaterno" required maxLength="50"/>
             <br />
             <label>Apellido Materno:</label>
             <br />
@@ -188,31 +188,31 @@ function App() {
             <br />
             <label>Calle:</label>
             <br />
-            <input type="text" className="form-control" onChange={handleChange} name="calle" />
+            <input type="text" className="form-control" onChange={handleChange} name="calle" required maxLength="100"/>
             <br />
             <label>Número:</label>
             <br />
-            <input type="text" className="form-control" onChange={handleChange} name="numero" />
+            <input type="text" className="form-control" onChange={handleChange} name="numero" required maxLength="20"/>
             <br />
             <label>Colonia:</label>
             <br />
-            <input type="text" className="form-control" onChange={handleChange} name="colonia" />
+            <input type="text" className="form-control" onChange={handleChange} name="colonia" required maxLength="100"/>
             <br />
             <label>Código Postal:</label>
             <br />
-            <input type="text" className="form-control" onChange={handleChange} name="codigoPostal" />
+            <input type="text" className="form-control" onChange={handleChange} name="codigoPostal" required maxLength="5" pattern='^[0-9]{5}$'/>
             <br />
             <label>Teléfono:</label>
             <br />
-            <input type="text" className="form-control" onChange={handleChange} name="telefono" />
+            <input type="text" className="form-control" onChange={handleChange} name="telefono" required maxLength="15"/>
             <br />
             <label>RFC:</label>
             <br />
-            <input type="text" className="form-control" onChange={handleChange} name="rfc" />
+            <input type="text" className="form-control" onChange={handleChange} name="rfc" required maxLength="13" pattern='^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1]))([A-Z\d]{3})?$'/>
             <br />
             <label>Estatus:</label>
             <br />
-            <select className="form-control" onChange={handleChange} name="estatus">
+            <select className="form-control" onChange={handleChange} name="estatus" required>
               <option value={1}>Enviado</option>
               <option value={2}>Autorizado</option>
               <option value={3}>Rechazado</option>
